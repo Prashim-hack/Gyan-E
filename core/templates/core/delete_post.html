@@ -1,0 +1,37 @@
+
+<head>
+    <title>Update Question</title>
+</head>
+{% load static %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.3/css/all.css"
+integrity="sha384-iKbFRxucmOHIcpWdX9NTZ5WETOPm0Goy0WmfyNcl52qSYtc2Buk0NCe6jU1sWWNB" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static '/main.css' %}">
+<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+<link rel="stylesheet" href="{% static '/assets/fonts/fontawesome-all.min.css' %}">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+type="text/css" media="screen" charset="utf-8">
+{% include 'core/navbar.html' %}
+ <body>
+     {% if user.is_authenticated %}
+       
+        <center><div class="form-group cards create-post container col-lg-7 col-sm-8 mt-10">
+            <div class="card__body">
+            <form method="POST">
+                {% csrf_token %}
+                <div style="margin-bottom: 10px; font-size: 1.1em;"><strong>Delete Post?</strong></div>
+                <div class="grey" style="font-size: .85em; margin-bottom: 15px;">
+                    This can’t be undone and it will be removed from your profile, and from Gyan-e search results.
+                </div>
+                <div style="padding: 0px 5%;">
+                    <button class="btn btn-light float-left" onclick="remove_popup()">Cancel</button>
+                    <button class="btn btn-danger float-right" id="delete_post_btn">Delete</button>
+                </div>
+            </form>
+        </div>
+        </div></center>
+       
+    {% endif %}
+ </body>

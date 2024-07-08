@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    {% load static %}
+ 
+    <!-- logo -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <!-- meta property  -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta property="type" content="question & answer website">
+    <meta property="title" content="Gyan-e">
+    <meta name="description" content="Gyan-e is a Question and Answer forum like platform for students to connect with each other and share their knowledge.">
+    <meta property="description" content="Gyan-e is a platform for students to connect with each other and share their knowledge.">
+    <meta name="keywords" content="gyane, thegyane, ask-mattrab, quora, education, studies, class 11, class 10, class 9, questions, answers, physics, chemistry, biology, maths, computer, economics, account, english, nepali, science, health, high-quality educational contents, programming">
+    <meta name="author" content="Gyan-e">
+    <!-- open graph meta tags -->
+    <meta property="og:type" content="question & answer website">
+    <meta property="og:title" content="Gyan-e">
+    <meta property="og:description" content="Gyan-e is a platform for students to connect with each other and share their knowledge.">
+    <meta property="og:image" content="{% static 'img/gyane.jpeg' %}">
+    <meta property="og:url" content="https://thegyane.pythonanywhere.com/">
+    <meta property="og:site_name" content="Gyan-e- Your Unfair Advantage">
+    <meta property="og:locale" content="en_US">
+    <!-- twitter tags -->
+    <meta name="twitter:card" content="{% static 'img/gyane.jpeg' %}">
+    <meta name="twitter:site" content="@thegyane">
+    <meta name="twitter:creator" content="@thegyane">
+    <meta name="twitter:title" content="Gyan-e">
+    <meta name="twitter:description" content="Gyan-e is a platform for students to connect with each other and share their knowledge.">
+    <meta name="msvalidate.01" content="41A5AEE1429B17783242742A44B6EA20" />
+    <!-- meta property end -->
+    <title>Gyan-e - Your Unfair Advantage</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-iKbFRxucmOHIcpWdX9NTZ5WETOPm0Goy0WmfyNcl52qSYtc2Buk0NCe6jU1sWWNB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static '/main.css' %}">
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="{% static '/assets/fonts/fontawesome-all.min.css' %}">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+        type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body id="page-top">
+    {% if user.is_authenticated %}
+
+<!-- include 'includes/navbar.html' -->
+{% include 'core/navbar.html' %}
+
+    <!-- home -->
+    <section class="row container-flex">
+
+        <div class="cards shadow-lg col-lg-2
+            col-sm-8 container welcome-card" style="
+            height: 20%;
+            width: 19%;
+            margin-top: 7rem !important;
+            margin-right: 9px;
+        ">
+            <!-- user image and then say hey user at the side -->
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col-lg-10" style="color: #000;">
+                        Topics you are following<br>
+                        <b>will be added soon !</b>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+
+
+        <div class="col-lg-6 " style="margin-top: 4rem;">
+
+            <div class="cards create-post container col-lg-11 col-sm-11">
+                <div class="card__body">
+                    <div class="create-post__body">
+                       
+                        <!-- make a dotted box which when clicked popsup the form -->
+                        <div>
+                            <div class="box row" style="border: 2px dotted black; height: 80px;border-radius: 12px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                   <center> <p style="font-size: 1.5rem;padding: 19px;">
+                                       <button href=""  style="border: none;background-color: transparent;"> <i class="fas fa-pencil-alt"></i>
+                                        Ask a Question </button>
+                                    </p>
+                                </center>
+                            </div>
+                        </div>
+                        <!-- form -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content" style="border-radius: 12px;">
+                                    <form class="form  " action="notes" method="post" enctype="multipart/form-data"
+                                    id="id_ajax_upload_form">
+
+                                    <div class="form__field">
+                                        <div class="container">
+                                            <div class="row" aria-required="true">
+                                                <!-- add placeholder using js -->
+                                                {% csrf_token %}
+                                                {{ form.media }}
+                                                {{ form.as_p }}
+
+                                                
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 10px; margin-left: 10px;">
+
+                                            {% csrf_token %}
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-comment-alt" style="margin-right: 8px;"></i>Post Now!</button>
+                                        </div>
+
+                                    </div>
+
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {% for Question in page_obj.object_list %}
+            <div class="cards create-post container col-lg-11 col-sm-11" id="posts">
+                <div class="card__body">
+                    <div class="post-wrapper">
+                        <div class="false">
+                            <div class="post-header-wrapper">
+                                <a class="author-box author-box--sm" href="{% url 'profile' Question.user.username %}">
+                                    <!-- when hovered over the image, the profile will be shown -->
+                                  
+                                      
+                                    <!-- if profile photo is not available then use default profile photo -->
+                                    {% load humanize %}
+                                    {% if Question.profile_pic.url %}
+                                    
+                                    <img class="avatar avatar--sm" src="{{ Question.profile_pic.url }}">
+                                {% else %}
+                                    <img src="{% static 'img/defaultprofile_photo.png' %}" class="avatar avatar--sm"
+                                    alt="">
+                                {% endif %}
+                                    <div class="author-box__info">
+                                        <p class="author-box__name">{{ Question.user.first_name }} {{ Question.user.last_name }}</p>
+                                        <small class="author-box__handle">@{{ Question.user }} - {{ Question.time_st | naturalday }}</small> <br> <br>
+                                        <small class="author-box__handle"  > 
+                                            {% if Question.total_comments > 0 %}
+                                            <!-- if there is comment write answered in green -->
+                                          
+                                            <p style="color: green;font-size: 13px;">  <i class="fas fa-check-circle" style="color: green;"></i> {{ Question.total_comments }} Answers</p>
+                                            {% else %}
+                                            <!-- if there is no comment write unanswered in red -->
+                                            
+                                            <p style="color: red;font-size: 13px;"><i class="fas fa-times-circle" style="color: red;"></i> No Answers</p>
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                    <br>
+                                </a>
+                                <div class="post--options">
+                                    <div class="post__dropmenu">
+                                       
+                                        <div class="post-meta ">
+                                            
+                                            
+                                        </div>
+                                        {% if user.is_authenticated %}
+                                            {% if request.user.id == Question.user.id %}
+                                                <div class="nav-item dropdown no-arrow ">
+                                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                            aria-expanded="false" data-bs-toggle="dropdown" href="#" style="
+                                                            margin-top: -15px;position:absolute !important;color: #000;">
+                                                            <i class="fas fa-cogs"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                                        <a class="dropdown-item" href="/question/edit/{{ Question.note_id }}">
+                                                            <i class="fas fa-edit fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Edit</a>
+                                                                <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item" href="/question/delete/{{ Question.note_id }}"><i class="fas fa-trash fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-contents">
+                                
+                                <input type="hidden" name="question_id" value="{{ Question.note_id }}">
+                                {% load editorjs %}
+
+                                <div class="post-body" id="post-bodyy">{{ Question.question| editorjs }}</div>
+                          
+                            
+                            </div>
+                            <div>
+                                <div class="post-actions-wrapper">
+                                    <div class="action-wrapper likes">
+                                        <!-- CLAPPING HAND ICON -->
+                                        <i class="fas fa-thumbs-up" style="visibility: hidden;"></i><span
+                                        class="post-action-text"><a href="/viewnotes/{{ Question.note_id }}" style="color: black;">{{ Question.likes.count }} likes </a> </span>
+                                    </div>
+                                   
+                                    <!-- script end -->
+                                    <div class="action-wrapper answerrs">
+                                        <a href="/viewnotes/{{ Question.note_id }}" style="color: #000;"><i
+                                                class="fas fa-comments"> </i><span
+                                                class="post-action-text answer-button">Answer 
+                                         
+                                            </span></a>
+                                       
+                                    </div>
+                                    <div class="action-wrapper viewss"><i class="fas fa-eye"></i><span
+                                        class="post-action-text"  style="color: black;">{{ Question.views }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <center>
+                <!-- make a next and previous button to navigate through the posts -->
+                <div class="pagination" style="align-items: center; margin: 25px 0 25px 45%;">
+                    {%if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary ">
+                        <!-- icon of a left arrow   -->
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    
+                    <!-- else disable the button -->
+                    {% else %}
+                    <a href="" class="btn btn-primary disabled">
+                        <!-- icon of a left arrow   -->
+                        <i class="fas fa-arrow-left"></i>
+                    {% endif %}
+                    
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary" style="margin-left:25px;">
+                        <!-- icon of a right arrow -->
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    {% else %}
+                    <a href="" class="btn btn-primary disabled" style="margin-left:25px;">
+                        <!-- icon of a right arrow -->
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    {% endif %}
+                    <span class="page-number" style="padding-left:25px;">{{ page_obj.number }}</span>
+                </div>
+            </center>
+            
+        </div>
+        
+        <div class="user-card cards col-lg-3 col-md-12 " style="height: 50%;margin-top: 7rem;margin-right: 32px;">
+            <div class="card__body container">
+                <div class="user-card__profile-summary">
+                    
+                        <!-- profile pic uploaded then -->
+                        {% if user.profile.profile_pic.url %}
+                        <img class="user-card__profile-pic avatar avatar--lg" alt="img-description"
+                        src="{{ user.profile.profile_pic.url }}" style>
+                        {% else %}
+                        <img class="user-card__profile-pic avatar avatar--lg" alt="img-description"
+                        src="{% static 'img/defaultprofile_photo.png' %}" style>
+                        {% endif %}
+                        <h1 class="user-card__profile-name">{{user.first_name}} {{ user.last_name }}</h1><i><a href="/profile/{{user.username}}" style="color: #000;">@{{user.username}}</a></i>
+                    <div class="custom-spacer"></div>
+                    {% if user.profile.small_intro %}
+                    <p>{{ user.profile.small_intro }}</p>
+                    {% else %}
+                    <p><b><a href="edit_profile/{{ user.username }}/"><i class="fas fa-pencil-alt"></i></a>&nbsp;&nbsp;<u>Write small intro about yourself</u></b></p>
+                    {% endif %}
+                    <div class="user-card">
+                        <!-- button for new post -->
+                        <div class="btn-lg">
+                            <a href="edit_profile/{{ user.username }}/" style="color: #ffffff !important;">
+                                <button class="btn btn-primary preview" >
+                                    <i class="fas fa-pencil-alt" style="color: #ffffff !important;"></i>
+                                    &nbsp; 
+                                   Edit Profile
+                                </button>
+                            </a>
+
+                        </div>
+                        <!-- make red logout  -->
+
+                        <a href="/logout">
+                            <button class="btn btn-alert preview" style="color: red;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                &nbsp;Logout
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+<!-- if user not authenticated  -->
+    {% else %}
+    {% include 'core/index.html' %}
+        {% endif %}
+
+    
+        <script src="{% static '/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static '/assets/js/script.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@editorjs/link@2.0.0"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        
+    <!-- close btn functionality -->
+  
+    <script>
+        $("#alert").fadeTo(2000, 500).slideUp(500, function(){
+     $("#alert").slideUp(400);
+     });
+     </script>
+      <script>
+        $('#id_ajax_upload_form').submit(function (e) {
+            e.preventDefault();
+            $form = $(this);
+            var formData = new FormData(this);
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // update the query section
+                    $('#body').load(location.href + '#body');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                }
+            });
+            $('#id_ajax_upload_form').trigger('reset');
+            location.reload();
+            $('#page-top').load(location.href + '#page-top');
+
+            
+        });
+    </script>
+        <script>
+            // show the answers only when answer is clicked
+            // only show the answer of the perticuler question when clicked
+
+            $(document).ready(function () {
+                $(".comments").hide();
+                $(".answer-button").click(function () {
+                    console.log("clicked");
+
+                    $(".comments").toggle("slow", function () {
+                        // Animation complete.
+                    });
+                    // add a bit animation when the answer is clicked twice
+
+
+                });
+
+            });
+        </script>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+                const postBody = document.getElementById("post-bodyy");
+                console.log("{{post.body|escapejs}}");
+                let body = JSON.parse("{{post.body|escapejs}}");
+                let blocks = body.blocks;
+                console.log(blocks.length);
+
+                for (let index = 0; index <= blocks.length; index++) {
+                    console.log(blocks[index], index);
+
+                    switch (blocks[index].type) {
+                        case "Header":
+                            let head = document.createElement(`h${blocks[index].data.level}`);
+                            head.textContent = blocks[index].data.text;
+                            postBody.appendChild(head);
+                            break;
+
+                        case "Image":
+                            let div = document.createElement("div");
+                            let image = document.createElement("img");
+                            let caption = document.createElement("small");
+                            image.src = `${blocks[index].data.file.url}`;
+                            image.style = "margin-top:10px;";
+                            image.height = 200;
+                            image.width = 200;
+                            caption.textContent = blocks[index].data.caption;
+                            caption.style = "margin-top:5px;";
+                            div.appendChild(image);
+                            div.appendChild(caption);
+                            div.style = "width:30%;display:grid;place-items:center";
+                            postBody.appendChild(div);
+                            break;
+
+                        case "List":
+                            let list;
+                            if (blocks[index].data.style == "unordered") {
+                                list = document.createElement("ul");
+                            } else {
+                                list = document.createElement("ol");
+                            }
+                            for (const item in blocks[index].data.items) {
+                                let li = document.createElement("li");
+                                li.textContent = blocks[index].data.items[item];
+                                list.appendChild(li);
+                            }
+                            postBody.appendChild(list);
+                            break;
+
+                        case "Raw":
+                            let blockquote = document.createElement("blockquote");
+                            let code = document.createElement("code");
+                            let pre = document.createElement("pre");
+                            pre.textContent = blocks[index].data.html;
+                            pre.style.background = "#131313";
+                            pre.style.color = "#dddddd";
+                            pre.style.padding = "15px";
+                            code.appendChild(pre);
+                            postBody.appendChild(code);
+                            break;
+                        // inline code
+                        case "code":
+                            let code1 = document.createElement("code");
+                            code1.textContent = blocks[index].data.text;
+                            postBody.appendChild(code1);
+                            break;
+                        case "Attaches":
+                            let parent = document.createElement("div");
+                            parent.style =
+                                "margin-top:10px;width:30%; padding:10px; border:1px solid black;border-radius:8px;";
+                            let a = document.createElement("a");
+                            let name = document.createElement("h4");
+                            a.href = `${blocks[index].data.file.url}`;
+                            a.textContent = `Download ${blocks[index].data.file.extension} (${blocks[index].data.file.size / 1000
+                                } kb)`;
+                            a.style = "grid-column: 1 / span 2";
+                            name.textContent = blocks[index].data.file.name;
+
+                            parent.appendChild(name);
+                            parent.appendChild(a);
+
+                            postBody.appendChild(parent);
+                            break;
+
+                        case "paragraph":
+                            const p = document.createElement("p");
+                            p.innerHTML = blocks[index].data.text;
+                            postBody.appendChild(p);
+                            break;
+
+                        case "Link":
+                            let parent2 = document.createElement("div");
+                            let a2 = document.createElement("a");
+                            parent2.style =
+                                " margin-top:10px; width:30%;display:grid; grid-template-columns: 1fr 50px; padding:10px; border:1px solid black;border-radius:8px;";
+
+                            if (blocks[index].data.meta.title) {
+                                let title = document.createElement("p");
+                                title.textContent = blocks[index].data.meta.title;
+                                parent2.appendChild(title);
+                            }
+                            if (blocks[index].data.meta.image.url !== "") {
+                                let parent3 = document.createElement("div");
+                                let img = document.createElement("img");
+
+                                img.src = blocks[index].data.meta.image.url;
+                                parent3.style = " display:grid;place-items:center";
+
+                                img.height = 40;
+                                img.width = 40;
+                                parent3.appendChild(img);
+                                parent2.appendChild(parent3);
+                            }
+
+                            if (blocks[index].data.meta.description) {
+                                let desc = document.createElement("small");
+                                desc.style = "grid-column: 1 / span 2";
+                                desc.textContent = blocks[index].data.meta.description;
+                                parent2.appendChild(desc);
+                            }
+                            a2.style = "text-decoration:none;color:black";
+                            a2.href = blocks[index].data.link;
+                            a2.appendChild(parent2);
+                            postBody.appendChild(a2);
+                            break;
+
+
+
+                        default:
+                            break;
+                    }
+                }
+            });
+        </script>
+        <!-- script which will hide the class ce-toolbox__button with data-tool = "Warning" -->
+        <script>
+            $(document).ready(function () {
+                $(".ce-toolbox__button[data-tool='Warning']").hide();
+                // also with data-tool= Raw
+                $(".ce-toolbox__button[data-tool='Raw']").hide();
+                // also with data-tool= Checklist
+                $(".ce-toolbox__button[data-tool='Checklist']").hide();
+            });
+            // add - at first in every cite tag 
+            $(document).ready(function () {
+                $("cite").each(function () {
+                    $(this).text("- " + $(this).text());
+                });
+            });
+        </script>
+
+        <!-- when we click share button it will show the share box -->
+ 
+    
+
+    </body>
+
+</html>

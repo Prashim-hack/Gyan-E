@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load static %}
+     <!-- logo -->
+     <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <!-- SEO -->
+    <!-- meta properties -->
+  {% load editorjs %}
+    <title id="title">
+       {{ title|editorjs }}
+    </title>
+    <!-- title -->
+    <meta name="title" content="GYAN-e">
+    <meta name="description" content="{{ title| editorjs }}" id="description">
+    <meta name="keywords" content="{{ title| editorjs }}" id="keywords">
+    {% for Question in postss %}
+    <meta name="author" content="{{ Question.user.first_name }}" id="author">
+    {% endfor %}
+    <meta name="robots" content="index, follow" id="robots">
+    <!-- image  -->
+    <meta property="og:image" content="{% static 'img/gyane.jpeg' %}" id="image">
+ <!-- open graph meta tags -->
+    <meta property="og:title" content="{{ title|editorjs }}" id="og:title">
+    <meta property="og:description" content="{{ title|editorjs }}" id="og:description">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" id="og:url">
+    <meta property="og:image" content="{% static 'img/gyane.jpeg' %}" id="og:image">
+    <meta property="og:type" content="website" id="og:type">
+    <meta property="og:site_name" content="GYAN-e" id="og:site_name">
+    <!-- twitter meta tags -->
+
+    <script>
+        // remove html tags
+        function replace_title(str) {
+            var str = str.replace(/<\/?[^>]+(>|$)/g, "");
+            return str;
+        }
+
+      document.title = replace_title(document.title).toString();
+    //   for meta description
+    document.getElementById('description').content = replace_title(document.getElementById('description').content).toString();
+    //   for meta keywords
+    document.getElementById('keywords').content = replace_title(document.getElementById('keywords').content).toString();
+        // for og:title
+    document.getElementById('og:title').content = replace_title(document.getElementById('og:title').content).toString();
+    //   for og:description
+    document.getElementById('og:description').content = replace_title(document.getElementById('og:description').content).toString();
+    </script>
+    
+   
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-iKbFRxucmOHIcpWdX9NTZ5WETOPm0Goy0WmfyNcl52qSYtc2Buk0NCe6jU1sWWNB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static '/main.css' %}">
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="{% static '/assets/fonts/fontawesome-all.min.css' %}">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+        type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body id="page-top">
+    {% include 'core/navbar.html' %} 
+    <!-- make a button which will go back to the previous page -->
+    <div class="container" style="margin-top: 3rem;">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/" class="btn btn-primary back-btn" style="margin-top: 59px; position: absolute;background:#59A5B9;border-color:#59A5B9;">
+                    <!-- icon of back arrow -->
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    <!-- for question in note -->
+    {% for Question in postss %}
+    <div class="cards create-post container col-lg-7 col-sm-11" id="posts">
+        <div class="card__body">
+            <div class="post-wrapper">
+                <div class="false">
+                    <div class="post-header-wrapper">
+                        <a class="author-box author-box--sm" href="{% url 'profile' Question.user.username %}">
+                            <!-- when hovered over the image, the profile will be shown -->
+                          
+                              
+                            <!-- if profile photo is not available then use default profile photo -->
+                            {% load humanize %}
+                            {% if Question.profile_pic.url %}
+                            
+                            <img class="avatar avatar--sm" src="{{ Question.profile_pic.url }}">
+                        {% else %}
+                            <img src="{% static 'img/defaultprofile_photo.png' %}" class="avatar avatar--sm"
+                            alt="">
+                        {% endif %}
+                            <div class="author-box__info">
+                                <p class="author-box__name">{{ Question.user.first_name }} {{ Question.user.last_name }}</p>
+                                <small class="author-box__handle">@{{ Question.user }} - {{ Question.time_st | naturalday }} </small>
+                                
+                                
+                            </div>
+                            <br>
+                           
+                        </a>
+                        <div class="post--options">
+                            <div class="post__dropmenu">
+                               
+                                <div class="post-meta ">
+                                    
+                                    
+                                </div>
+                                {% if user.is_authenticated %}
+                                    {% if request.user.id == Question.user.id %}
+                                        <div class="nav-item dropdown no-arrow ">
+                                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                    aria-expanded="false" data-bs-toggle="dropdown" href="#" style="
+                                                    margin-top: -15px;position:absolute !important;color: #000;">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                                <a class="dropdown-item" href="/question/edit/{{ Question.note_id }}">
+                                                    <i class="fas fa-edit fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Edit</a>
+
+                                                        <!-- delete icon -->
+                                                        
+
+                                                        <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="/question/delete/{{ Question.note_id }}"><i class="fas fa-trash fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-contents">
+                      
+
+                        {% load editorjs %}
+                        <div class="post-body" id="post-bodyy">{{ Question.question| editorjs}}</div>
+                    </div>
+                    <div>
+                        <div class="post-actions-wrapper">
+                                <div class="action-wrapper">
+                                    {% if request.user.is_like %}
+                                    <button type="submit" id="post_id" name="post_id" style="border: none;background-color: transparent;color: blue;">
+                                        <i class="fas fa-thumbs-up like-click" data-answer = "{{ Question.note_id }}"></i>
+                                    </button>
+                                    {% else %}
+                                    <button type="submit" id="post_id" name="post_id" style="border: none;background-color: transparent;color: black;">
+                                        <i class="far fa-thumbs-up like-click" data-answer = "{{ Question.note_id }}"></i>
+                                    </button>
+                                    {% endif %}
+                                    <span
+                                    class="post-action-text like-count-{{ Question.note_id }}" id="likee">{{ Question.likes.count }}</span>
+
+                                    
+                                    <!-- <input type="button" id="post_id" name="post_id" value="Like" />
+                                    <span class="like-count-{{ Question.note_id }}" id="likee">{{ Question.likes.count }}</span> -->
+                                </div>
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                <script>
+                                    $('#post_id').click(function(){
+                                          $.ajax({
+                                                   type: "POST",
+                                                   url: "{% url 'like' Question.note_id %}",
+                                                    data: {
+                                                    'post_id': $(this).data('post_id'),
+                                                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                                                    },
+                                                    success: function(data){
+                                                        // increase the like count
+                                                        // if message:"liked" then increase the like count
+                                                        var prevdata = $('.like-count-{{ Question.note_id }}').text();
+                                                        if(data.liked == true){
+                                                            $('#likee').text(parseInt(prevdata)+1);
+                                                            $('.like-click').css('color','#59A5B9');
+                                                            // change the color of the like button to blue
+                                                        }
+                                                       
+                                                        else{
+                                                            $('#likee').text(parseInt(prevdata)-1);
+                                                            $('.like-click').removeAttr('style');
+                                                        }
+                                        
+                                                       
+                                                       
+                                                    },
+                                                    error: function(data){
+                                                        console.log(data);
+                                                    }
+                                                });
+                                    });
+                                </script>
+                            <div class="action-wrapper action-wrapper--disabled"><i class="fas fa-comments"></i>
+                                <span class="post-action-text">{{ comment.count }}</span></div>
+                            <!-- <div class="action-wrapper"><i class="fas fa-users"></i>
+                                <span class="post-action-text">{{ Question.views }}</span>
+                            </div> -->
+                            <!-- share this post -->
+                            <div class="sharee" id= "{{ Question.note_id }}">
+                                       
+                                <div class="action-wrapper share" ><i class="fas fa-share-alt"></i><span
+                                        class="post-action-text"></span></div>
+                                <!-- share box will be here -->
+                                <div class="share-box{{ Question.note_id }}" 
+                                style="
+                                display: none;    
+                                position: absolute;
+                                background-color: rgb(255, 255, 255);
+                                box-shadow: rgb(0 0 0 / 50%) 0px 2px 4px 0px;
+                                padding: 14px;
+                                border-radius: 12px;
+                                align-items: center;
+                                text-align: center;
+                                ">
+                                <!-- end css -->
+                                <!-- facebook -->
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://thegyane.pythonanywhere.com/viewnotes/{{ Question.note_id }}"
+                                        target="_blank">
+                                    <div class="action-wrapper"><i class="fab fa-facebook-f"></i><span
+                                            class="post-action-text"></span></div>
+                                    </a>
+                                <!-- twitter -->
+                                    <a href="https://twitter.com/intent/tweet?url=https://thegyane.pythonanywhere.com/viewnotes/{{ Question.note_id }}" target="_blank">
+                                    <div class="action-wrapper"><i class="fab fa-twitter"></i><span
+                                            class="post-action-text"></span></div>
+                                    </a>
+                                <!-- linkedin -->
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://thegyane.pythonanywhere.com/viewnotes/{{ Question.note_id }}" target="__blank">
+                                    <div class="action-wrapper"><i class="fab fa-linkedin-in"></i><span
+                                            class="post-action-text"></span></div>
+                                    </a>
+                                    
+                                </div>
+                                <!-- SCRIPT -->
+                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                <script>
+                                    $(document).ready(function () {
+                                        $("#{{ Question.note_id }}").click(function () {
+                                            // toggle with animation effect 
+                                            $(".share-box{{ Question.note_id }}").toggle();
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- make a box which says Know the answer to this question and add a button which says answer it -->
+    <div class="cards create-post container col-lg-5 col-sm-11 answerr" style="display: flex; padding: 20px;" id="answer-it">
+        <p style=" margin:12px 20px;"><b class="paragraphh">Know the answer to the question ?? </b></p>
+        <!-- if user is authenticated -->
+        {% if user.is_authenticated %}
+        <button class="btn btn-primary" style=" position: relative;background:#59A5B9;border-color:#59A5B9;">
+            <p style="color:white;padding-top: 8px;" class="answer-text"><b style="color: white !important;">Answer it</b></p>
+        </button>
+        {% else %}
+        <a href="/" style="color: white;"><button class="btn btn-primary" style=" position: relative;background:#59A5B9;border-color:#59A5B9; margin:0px 20px;">
+            <p style="color:white;padding-top: 8px;"><b> Login To Answer</b></p>
+        </button></a>
+        {% endif %}
+    </div>
+    <!-- comment form -->
+
+        <div class="cards create-post container col-lg-7 col-sm-8" style="display: none;" id="comment-form">
+            <div class="card__body">
+                <div class="create-post__body">
+                    <!-- make a hint box which tell to press tab if in laptop -->
+                    <div class="create-post__hint">
+                        <p>Press
+                            <span class="create-post__hint-key">
+                                <!-- make the tab key show as a tab -->
+                                <kbd>Tab</kbd>&nbsp;after clicking the box
+                            </span>
+                            to open toolbar
+                        </p>
+                    </div>
+
+                    <form class="form" method="post" enctype="multipart/form-data">
+
+                        <div class="form__field">
+                            <div class="container-flex">
+                                <div class="row" aria-required="true">
+                                    <!-- add placeholder using js -->
+                                    {% csrf_token %}
+                                    {{ form.media }}
+                                    {{ form.as_p }}
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px;">
+
+                                {% csrf_token %}
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-comments-alt" style="margin-right: 8px;"></i>Post Now!</button>
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    <!-- comments -->
+    <br><br>
+    <center>
+        <h2><b>Comments</b></h2>
+    </center>
+    {% for Comment in comment %}
+    <div class="cards create-post container col-lg-7 col-sm-8" id="posts">
+        <div class="card__body">
+            <div class="post-wrapper">
+                <div class="false">
+                    <div class="post-header-wrapper">
+                        <a class="author-box author-box--sm" href="/profile/{{ Comment.user.username }}">
+                            <!-- if user last name is unknown then use default profile photo -->
+                            <!-- if user has no profile photo then use default profile photo -->
+                            {% if Comment.profile_pic.url %}
+                                    
+                            <img class="avatar avatar--sm" src="{{ Comment.profile_pic.url }}">
+                        {% else %}
+                            <img src="{% static 'img/defaultprofile_photo.png' %}" class="avatar avatar--sm"
+                            alt="">
+                        {% endif %}
+                            <div class="author-box__info">
+                                <p class="author-box__name">{{ Comment.user.first_name }}</p><small
+                                    class="author-box__handle">@{{ Comment.user }}</small>
+                            </div>
+                        </a>
+                        <div class="post--options">
+                            <div class="post__dropmenu">
+                               
+                                <div class="post-meta ">
+                                    
+                                    
+                                </div>
+                                {% if user.is_authenticated %}
+                                    {% if request.user.id == Comment.user.id %}
+                                        <div class="nav-item dropdown no-arrow ">
+                                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                    aria-expanded="false" data-bs-toggle="dropdown" href="#" style="
+                                                    margin-top: -15px;position:absolute !important;color: #000;">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                                <a class="dropdown-item" href="/comment/edit/{{ Comment.comment_id }}">
+                                                    <i class="fas fa-edit fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Edit</a>
+
+                                                        <!-- delete icon -->
+                                                        
+
+                                                        <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="/comment/delete/{{ Comment.comment_id }}"><i class="fas fa-trash fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-contents">
+                     
+            
+                        {% load editorjs %}
+                        <div class="post-body" id="post-bodyy">{{ Comment.comment| editorjs}}</div>
+                    </div>
+                    <div>
+                        <div class="post-actions-wrapper">
+                            <div class="action-wrapper action-wrapper--disabled"><i class="fas fa-comments"></i><span
+                                    class="post-action-text">0</span></div>
+                            <div class="action-wrapper"><i class="fas fa-comments"> </i><span
+                                    class="post-action-text answer-button">Reply</span>
+                                <!-- reply form -->
+                               
+                                    
+                                <!-- show comments -->
+                            </div>
+                            <div class="action-wrapper"><i class="fas fa-users"></i><span
+                                    class="post-action-text">1</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <script src="{% static '/assets/js/script.min.js' %}"></script>
+    <!-- add name="comm" in the textx editor -->
+    <!-- ajax -->
+    <!-- script for jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        // when answer button is clicked then show the comment form
+        // change the style display none to block
+        $(document).ready(function () {
+            $(".answerr").click(function () {
+                // show with animation 
+                // slide from up
+                $("#comment-form").slideToggle("slow");
+                if ($(".answer-text").text() == "Answer it") {
+                    $(".answer-text").text("Cancel");
+                } else {
+                    $(".answer-text").text("Answer it");
+                }
+            });
+        });
+       
+
+    </script>
+    <script>
+       var description = document.createElement("meta");
+        description.name = "description";
+        description.content = document.getElementById("post-bodyy").innerText;
+        document.getElementsByTagName("head")[0].appendChild(description);
+    </script>
+
+</body>
+
+</html>
