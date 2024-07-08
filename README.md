@@ -12,7 +12,7 @@ link: https://www.gyane.xyz
 At first clone the repository
 
 ```
-git clone https://github.com/Prashim-hack/Gyan-E.git
+git clone https://github.com/prashimpy/Gyan-E.git
 ```
 
 Now after you have cloned then you should have Python installed.
